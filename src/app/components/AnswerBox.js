@@ -69,11 +69,23 @@ const AnswerBox = ({ answer, loading, question, type }) => {
       ) : (
         answer && (
           <div className="text-gray-700 whitespace-pre-wrap leading-relaxed break-words">
-            {answer}
-            
-          </div>
-         
+            {answer.split("\n").map((line, index) => {
+              const boldHeadingMatch = line.match(/^\*\*(.*?)\*\*$/); // Detects **Heading**
 
+              return boldHeadingMatch ? (
+                <strong
+                  key={index}
+                  className="block mt-3 text-xl text-gray-900"
+                >
+                  {boldHeadingMatch[1]}
+                </strong>
+              ) : (
+                <span key={index} className="block">
+                  {line}
+                </span>
+              );
+            })}
+          </div>
         )
       )}
 

@@ -56,7 +56,7 @@ export default function Home() {
           </h1>
           <div className="flex gap-2">
             <select
-              className=" mt-2 p-2 border border-gray-300 rounded-md text-sm"
+              className=" mt-2 p-2 border border-gray-300 rounded-md text-sm text-black"
               value={ai}
               onChange={(e) => setAi(e.target.value)}
             >
