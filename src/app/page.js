@@ -51,12 +51,12 @@ export default function Home() {
       <Navbar />
       <div className="mx-auto max-w-3xl w-full mt-6 bg-white shadow-md p-6 rounded-md">
         <div className="flex items-center justify-between px-2">
-          <h1 className="text-3xl font-bold text-center text-gray-800">
+          <h1 className="md:text-3xl font-bold text-center text-gray-800">
             BPSC Answer Writing AI
           </h1>
           <div className="flex gap-2">
             <select
-              className=" mt-2 p-2 border border-gray-300 rounded-md"
+              className=" mt-2 p-2 border border-gray-300 rounded-md text-sm"
               value={ai}
               onChange={(e) => setAi(e.target.value)}
             >
@@ -65,7 +65,7 @@ export default function Home() {
             </select>
             {ai === "gemini" && (
               <select
-                className=" mt-2 p-2 border border-gray-300 rounded-md"
+                className=" mt-2 p-2 border border-gray-300 rounded-md text-black text-sm"
                 value={api}
                 onChange={(e) => setApi(e.target.value)}
               >
@@ -78,7 +78,7 @@ export default function Home() {
 
         {/* Question Input */}
         <textarea
-          className="w-full mt-4 p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full text-sm mt-4 text-black p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           rows="3"
           placeholder="Enter your question..."
           value={question}
@@ -88,7 +88,7 @@ export default function Home() {
         {/* Language Type Selection */}
 
         <select
-          className="w-full mt-2 p-3 border border-gray-300 rounded-md"
+          className="w-full text-sm mt-2 p-3 border border-gray-300 text-black rounded-md"
           value={language}
           onChange={(e) => setLanguage(e.target.value)}
         >
@@ -98,7 +98,7 @@ export default function Home() {
 
         {/* Answer Type Selection */}
         <select
-          className="w-full mt-2 p-3 border border-gray-300 rounded-md"
+          className="w-full text-sm mt-2 p-3 border border-gray-300 rounded-md text-black"
           value={type}
           onChange={(e) => setType(e.target.value)}
         >

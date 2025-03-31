@@ -68,9 +68,12 @@ const AnswerBox = ({ answer, loading, question, type }) => {
         </div>
       ) : (
         answer && (
-          <div className="text-gray-700 whitespace-pre-wrap leading-relaxed">
+          <div className="text-gray-700 whitespace-pre-wrap leading-relaxed break-words">
             {answer}
+            
           </div>
+         
+
         )
       )}
 

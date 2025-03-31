@@ -29,10 +29,7 @@ export default function LongAnswers() {
       setError(null);
 
       try {
-        const q = query(
-          collection(db, "answers"),
-          where("type", "==", "long")
-        );
+        const q = query(collection(db, "answers"), where("type", "==", "long"));
         const querySnapshot = await getDocs(q);
 
         if (querySnapshot.empty) {
@@ -75,27 +72,28 @@ export default function LongAnswers() {
       await deleteDoc(doc(db, "answers", docPath)); // 🔥 Use the same ID structure
 
       // console.log("✅ Document deleted successfully from Firestore");
-           toast.success("Answer Deleted successfully! ✅");
-     
-           // Remove from local state
-           setAnswers((prevAnswers) =>
-             prevAnswers.filter((ans) => ans.question !== question)
-           );
-           setSelectedAnswer(null);
-         } catch (err) {
-           console.error("❌ Error deleting answer:", err);
-           setError("Failed to delete answer. Please try again.");
-           toast.error(`Firestore Error: ${error.message}`);
-     
-         } finally {
-           setDeleting(false);
-         }
+      toast.success("Answer Deleted successfully! ✅");
+
+      // Remove from local state
+      setAnswers((prevAnswers) =>
+        prevAnswers.filter((ans) => ans.question !== question)
+      );
+      setSelectedAnswer(null);
+    } catch (err) {
+      console.error("❌ Error deleting answer:", err);
+      setError("Failed to delete answer. Please try again.");
+      toast.error(`Firestore Error: ${error.message}`);
+    } finally {
+      setDeleting(false);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gray-100 p-4">
       <Navbar />
-      <h1 className="text-2xl font-bold text-center">Saved Questions</h1>
+      <h1 className="text-2xl font-bold text-center text-black">
+        Saved Questions
+      </h1>
 
       <div className="max-w-2xl mx-auto mt-6">
         {loading && <p className="text-center text-blue-500">Loading...</p>}
@@ -113,8 +111,23 @@ export default function LongAnswers() {
             <h2 className="text-xl font-semibold text-gray-800">
               {selectedAnswer.question}
             </h2>
-            <p className="mt-4 text-gray-700 whitespace-pre-wrap break-words">
-              {selectedAnswer.answer}
+            <p className="mt-6 text-gray-800 bg-gray-50 p-4 border-l-4 border-blue-500 rounded-md shadow-sm whitespace-pre-wrap break-words leading-loose text-lg">
+              {selectedAnswer.answer.split("\n").map((line, index) => {
+                const boldHeadingMatch = line.match(/^\*\*(.*?)\*\*$/); // Detects **Heading**
+
+                return boldHeadingMatch ? (
+                  <strong
+                    key={index}
+                    className="block mt-3 text-xl text-gray-900"
+                  >
+                    {boldHeadingMatch[1]}
+                  </strong>
+                ) : (
+                  <span key={index} className="block">
+                    {line}
+                  </span>
+                );
+              })}
             </p>
 
             <button
