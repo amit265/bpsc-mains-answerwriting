@@ -8,7 +8,7 @@ export default function Home() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(null);
   const [type, setType] = useState("short");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   const generateAnswer = async () => {
     if (!question.trim()) return alert("Please enter a question!");
