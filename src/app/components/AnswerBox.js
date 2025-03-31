@@ -55,7 +55,7 @@ const AnswerBox = ({ answer, loading, question, type }) => {
   };
 
   return (
-    <div className="mx-auto mt-6 p-4 border rounded-lg shadow bg-white max-w-7/12">
+    <div className="mx-auto mt-6 p-4 border rounded-lg shadow bg-white lg:max-w-7/12">
       <h2 className="text-lg font-semibold text-gray-800 mb-2">
         {loading ? "Generating Answer..." : "Generated Answer:"}
       </h2>
@@ -77,14 +77,14 @@ const AnswerBox = ({ answer, loading, question, type }) => {
       {!loading && answer && (
         <div className="mt-4 flex gap-3">
           <button
-            className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition"
+            className="px-3 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600 transition cursor-pointer"
             onClick={handleCopy}
           >
             {copied ? "Copied! ✅" : "Copy Answer 📋"}
           </button>
 
           <button
-            className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition"
+            className="px-3 py-1 bg-green-500 text-white text-sm rounded hover:bg-green-600 transition cursor-pointer"
             onClick={handleSave}
             disabled={saving}
           >

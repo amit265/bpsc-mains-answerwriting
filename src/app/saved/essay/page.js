@@ -106,9 +106,9 @@ export default function EssayAnswers() {
           <div className="bg-white p-6 rounded-md shadow-md">
             <button
               onClick={() => setSelectedAnswer(null)}
-              className="mb-4 text-blue-600 hover:underline"
+              className="mb-4 text-blue-600 hover:underline cursor-pointer"
             >
-              ⬅ Back
+              🔙 Back
             </button>
             <h2 className="text-xl font-semibold text-gray-800">
               {selectedAnswer.question}
@@ -120,7 +120,7 @@ export default function EssayAnswers() {
             <button
               onClick={() => handleDelete("essay", selectedAnswer.question)}
               disabled={deleting}
-              className="mt-4 bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-600 disabled:bg-gray-400"
+              className="mt-4 bg-red-500 text-white px-4 py-2 cursor-pointer rounded hover:bg-red-600 disabled:bg-gray-400 "
             >
               {deleting ? "Deleting..." : "Delete"}
             </button>

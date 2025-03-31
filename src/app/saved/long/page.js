@@ -106,9 +106,9 @@ export default function LongAnswers() {
           <div className="bg-white p-6 rounded-md shadow-md">
             <button
               onClick={() => setSelectedAnswer(null)}
-              className="mb-4 text-blue-600 hover:underline"
+              className="mb-4 text-blue-600 hover:underline cursor-pointer"
             >
-              ⬅ Back
+              🔙 Back
             </button>
             <h2 className="text-xl font-semibold text-gray-800">
               {selectedAnswer.question}

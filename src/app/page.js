@@ -8,6 +8,7 @@ export default function Home() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(null);
   const [type, setType] = useState("short");
+  const [language, setLanguage] = useState("english");
   const [loading, setLoading] = useState(false);
 
   const generateAnswer = async () => {
@@ -20,7 +21,7 @@ export default function Home() {
       const response = await fetch("/api/generateAnswer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question, type }),
+        body: JSON.stringify({ question,language, type }),
       });
 
       const data = await response.json();
@@ -53,6 +54,17 @@ export default function Home() {
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
         />
+
+        {/* Language Type Selection */}
+
+        <select
+          className="w-full mt-2 p-3 border border-gray-300 rounded-md"
+          value={language}
+          onChange={(e) => setLanguage(e.target.value)}
+        >
+          <option value="english">English</option>
+          <option value="hindi">Hindi</option>
+        </select>
 
         {/* Answer Type Selection */}
         <select

@@ -13,8 +13,8 @@ export async function POST(req) {
     const body = await req.json();
     console.log("📥 Request Body:", body);
 
-    const { question, type } = body;
-    if (!question || !type) {
+    const { question, language, type } = body;
+    if (!question || !type || !language) {
       console.log("❌ Missing question or type in request!");
       return new Response(
         JSON.stringify({ error: "Missing question or type" }),
@@ -34,7 +34,14 @@ export async function POST(req) {
         : type === "long"
         ? LONG_ANSWER_PROMPT
         : ESSAY_PROMPT;
-    console.log(prompt);
+
+    const finalPrompt = `${prompt.replace(
+      "{question}",
+      question
+    )}\n\nPlease provide the response in ${language}.`;
+
+    console.log("final Prompt", finalPrompt);
+    
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
@@ -44,7 +51,7 @@ export async function POST(req) {
       contents: [
         {
           role: "user",
-          parts: [{ text: prompt.replace("{question}", question) }],
+          parts: [{ text: finalPrompt }],
         },
       ],
     });
