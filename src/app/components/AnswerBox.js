@@ -33,7 +33,7 @@ const AnswerBox = ({ answer, loading, question, type }) => {
     const uniqueId = uuidv4();
     const docRef = doc(db, "answers", type + " : " + question);
 
-    console.log("🟡 Attempting to save document with ID:", uniqueId);
+    // console.log("🟡 Attempting to save document with ID:", uniqueId);
 
     try {
       await setDoc(docRef, {
@@ -44,7 +44,7 @@ const AnswerBox = ({ answer, loading, question, type }) => {
         createdAt: new Date(), // 🔥 Replace serverTimestamp() for debugging
       });
 
-      console.log("✅ Document successfully written with ID:", uniqueId);
+      // console.log("✅ Document successfully written with ID:", uniqueId);
       toast.success("Answer saved successfully! ✅");
     } catch (error) {
       console.error("❌ Firestore Write Error:", error.code, error.message);

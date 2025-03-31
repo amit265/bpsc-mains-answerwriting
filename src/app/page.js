@@ -5,11 +5,21 @@ import AnswerBox from "./components/AnswerBox";
 import Navbar from "./components/Navbar";
 
 export default function Home() {
+  const gemini_api_key1 = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+  const gemini_api_key2 = process.env.NEXT_PUBLIC_GEMINI_API_KEY_A;
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(null);
   const [type, setType] = useState("short");
   const [language, setLanguage] = useState("english");
   const [loading, setLoading] = useState(false);
+  const [api, setApi] = useState(gemini_api_key1);
+
+  // console.log("gemini_api_key1", gemini_api_key1);
+
+  // console.log(gemini_api_key2);
+
+  
+
 
   const generateAnswer = async () => {
     if (!question.trim()) return alert("Please enter a question!");
@@ -21,7 +31,7 @@ export default function Home() {
       const response = await fetch("/api/generateAnswer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question,language, type }),
+        body: JSON.stringify({ question,language, type, api }),
       });
 
       const data = await response.json();
@@ -42,9 +52,21 @@ export default function Home() {
     <div className="min-h-screen bg-gray-100 p-4">
       <Navbar />
       <div className="mx-auto max-w-3xl w-full mt-6 bg-white shadow-md p-6 rounded-md">
-        <h1 className="text-3xl font-bold text-center text-gray-800">
+       <div className="flex items-center justify-between px-2">
+       <h1 className="text-3xl font-bold text-center text-gray-800">
           BPSC Answer Writing AI
         </h1>
+       <select
+          className=" mt-2 p-2 border border-gray-300 rounded-md"
+          value={api}
+          onChange={(e) => setApi(e.target.value)}
+        > 
+          <option value={gemini_api_key1}>API-1</option>
+          <option value={gemini_api_key2}>API-2</option>
+        </select>
+
+       </div>
+        
 
         {/* Question Input */}
         <textarea

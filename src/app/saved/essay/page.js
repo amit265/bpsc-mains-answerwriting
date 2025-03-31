@@ -20,7 +20,7 @@ export default function EssayAnswers() {
   const [selectedAnswer, setSelectedAnswer] = useState(null); // Track selected question
   const [deleting, setDeleting] = useState(false); // Track delete state
 
-  console.log(answers);
+  // console.log(answers);
 
   // Fetch answers
   useEffect(() => {
@@ -70,11 +70,11 @@ export default function EssayAnswers() {
 
     try {
       const docPath = type + " : " + question; // 🔥 Construct the document path
-      console.log("🟡 Attempting to delete document:", docPath);
+      // console.log("🟡 Attempting to delete document:", docPath);
 
       await deleteDoc(doc(db, "answers", docPath)); // 🔥 Use the same ID structure
 
-      console.log("✅ Document deleted successfully from Firestore");
+      // console.log("✅ Document deleted successfully from Firestore");
       toast.success("Answer Deleted successfully! ✅");
 
       // Remove from local state

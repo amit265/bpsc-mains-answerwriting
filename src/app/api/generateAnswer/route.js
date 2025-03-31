@@ -3,17 +3,23 @@ import { LONG_ANSWER_PROMPT } from "@/app/utils/prompts/long";
 import { SHORT_ANSWER_PROMPT } from "@/app/utils/prompts/short";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_A);
-console.log(process.env.GEMINI_API_KEY_A);
+// console.log(process.env.GEMINI_API_KEY_A);
 
 export async function POST(req) {
   console.log("✅ Received API Request");
 
   try {
     const body = await req.json();
-    console.log("📥 Request Body:", body);
+    // console.log("📥 Request Body:", body);
 
-    const { question, language, type } = body;
+    const { question, language, type, api } = body;
+    // console.log("body", body);
+    // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_A);
+
+    // console.log("api from body request ", api);
+    
+    const genAI = new GoogleGenerativeAI(api);
+
     if (!question || !type || !language) {
       console.log("❌ Missing question or type in request!");
       return new Response(
@@ -40,7 +46,7 @@ export async function POST(req) {
       question
     )}\n\nPlease provide the response in ${language}.`;
 
-    console.log("final Prompt", finalPrompt);
+    // console.log("final Prompt", finalPrompt);
     
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
@@ -55,7 +61,7 @@ export async function POST(req) {
         },
       ],
     });
-    console.log("✅ Gemini API response received:", result);
+    // console.log("✅ Gemini API response received:", result);
 
     const response = await result.response;
     const text = response.text();
