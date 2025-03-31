@@ -8,7 +8,7 @@ export default function Home() {
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(null);
   const [type, setType] = useState("short");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const generateAnswer = async () => {
     if (!question.trim()) return alert("Please enter a question!");
@@ -68,7 +68,7 @@ export default function Home() {
         {/* Generate Answer Button */}
         <button
           onClick={generateAnswer}
-          className="w-full mt-4 bg-blue-600 text-white font-medium p-3 rounded-md hover:bg-blue-700 transition"
+          className="w-full mt-4 bg-blue-600 text-white font-medium p-3 rounded-md hover:bg-blue-700 transition cursor-pointer"
           disabled={loading}
         >
           {loading ? "Generating..." : "Generate Answer"}
@@ -77,7 +77,7 @@ export default function Home() {
 
       {/* Skeleton Loader */}
       {loading && (
-        <div className="max-w-3xl w-full mt-6 bg-white p-6 rounded-md shadow-md">
+        <div className="max-w-3xl w-full mt-6 bg-white p-6 rounded-md shadow-md mx-auto">
           <div className="animate-pulse">
             <div className="h-5 bg-gray-300 rounded w-3/4"></div>
             <div className="h-4 bg-gray-200 rounded mt-2 w-full"></div>
