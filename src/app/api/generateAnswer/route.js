@@ -3,8 +3,8 @@ import { LONG_ANSWER_PROMPT } from "@/app/utils/prompts/long";
 import { SHORT_ANSWER_PROMPT } from "@/app/utils/prompts/short";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-console.log(process.env.GEMINI_API_KEY);
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_A);
+console.log(process.env.GEMINI_API_KEY_A);
 
 export async function POST(req) {
   console.log("✅ Received API Request");

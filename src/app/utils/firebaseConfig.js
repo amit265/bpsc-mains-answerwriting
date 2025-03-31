@@ -10,9 +10,9 @@ const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 };
 
-console.log("🔍 Firebase Config:", firebaseConfig);
+// console.log("🔍 Firebase Config:", firebaseConfig);
 
-console.log("process.env.GEMINI_API_KEY", process.env.GEMINI_API_KEY);
+// console.log("process.env.GEMINI_API_KEY", process.env.GEMINI_API_KEY);
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
