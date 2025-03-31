@@ -89,9 +89,9 @@ export default function LongAnswers() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
+    <div className="min-h-screen bg-gray-50">
       <Navbar />
-      <h1 className="text-2xl font-bold text-center text-black">
+      <h1 className="text-2xl font-bold text-center text-black pt-2">
         Saved Questions
       </h1>
 
@@ -108,11 +108,11 @@ export default function LongAnswers() {
             >
               🔙 Back
             </button>
-            <h2 className="text-xl font-semibold text-gray-800">
+            {/* <h2 className="text-xl font-semibold text-gray-800">
               {selectedAnswer.question}
-            </h2>
-            <p className="mt-6 text-gray-800 bg-gray-50 p-4 border-l-4 border-blue-500 rounded-md shadow-sm whitespace-pre-wrap break-words leading-loose text-lg">
-              {selectedAnswer.answer.split("\n").map((line, index) => {
+            </h2> */}
+            <p className=" text-gray-800 px-2 rounded-md shadow-sm whitespace-pre-wrap break-words leading-loose sm:text-lg">
+            {selectedAnswer.answer.split("\n").map((line, index) => {
                 const boldHeadingMatch = line.match(/^\*\*(.*?)\*\*$/); // Detects **Heading**
 
                 return boldHeadingMatch ? (

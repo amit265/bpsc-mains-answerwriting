@@ -55,12 +55,8 @@ const AnswerBox = ({ answer, loading, question, type }) => {
   };
 
   return (
-    <div className="mx-auto mt-6 p-4 border rounded-lg shadow bg-white lg:max-w-7/12">
-      <h2 className="text-lg font-semibold text-gray-800 mb-2">
-        {loading ? "Generating Answer..." : "Generated Answer:"}
-      </h2>
-
-      {loading ? (
+    <div className="mx-auto mt-6 p-4 border rounded-lg shadow bg-gray-50 lg:max-w-7/12">
+        {loading ? (
         <div className="animate-pulse p-6 border rounded-lg shadow bg-white max-w-lg w-full mx-auto">
           <div className="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
           <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
@@ -68,7 +64,7 @@ const AnswerBox = ({ answer, loading, question, type }) => {
         </div>
       ) : (
         answer && (
-          <div className="text-gray-700 whitespace-pre-wrap leading-relaxed break-words">
+          <div className="text-gray-800 px-2 rounded-md shadow-sm whitespace-pre-wrap break-words leading-loose sm:text-lg">
             {answer.split("\n").map((line, index) => {
               const boldHeadingMatch = line.match(/^\*\*(.*?)\*\*$/); // Detects **Heading**
 
