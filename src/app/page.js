@@ -7,6 +7,7 @@ import Navbar from "./components/Navbar";
 export default function Home() {
   const gemini_api_key1 = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
   const gemini_api_key2 = process.env.NEXT_PUBLIC_GEMINI_API_KEY_A;
+  
   const [question, setQuestion] = useState("");
   const [answer, setAnswer] = useState(null);
   const [type, setType] = useState("short");
@@ -64,6 +65,8 @@ export default function Home() {
             >
               <option value="gemini">Gemini</option>
               <option value="openai">Chat GPT</option>
+              <option value="deepseek">DeepSeek</option>
+              
             </select>
             {ai === "gemini" && (
               <select

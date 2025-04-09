@@ -1,38 +1,40 @@
 import { ESSAY_PROMPT } from "@/app/utils/prompts/essay";
 import { LONG_ANSWER_PROMPT } from "@/app/utils/prompts/long";
 import { SHORT_ANSWER_PROMPT } from "@/app/utils/prompts/short";
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import OpenAI from "openai";
-const openai_api_key = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
-console.log(openai_api_key);
+
+const openai_api_key = process.env.OPENAI_API_KEY || process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+const deepseek_api_key = process.env.DEEPSEEK_API_KEY || process.env.NEXT_PUBLIC_DEEPSEEK_API_KEY;
+
+
+const withTimeout = (promise, timeoutMs = 120000) =>
+  Promise.race([
+    promise,
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("⏳ Timeout: External API did not respond in time")), timeoutMs)
+    ),
+  ]);
 
 export async function POST(req) {
   console.log("✅ Received API Request");
 
   try {
     const body = await req.json();
-    // console.log("📥 Request Body:", body);
-
     const { question, language, type, api, ai } = body;
-    console.log("body", body);
-    // const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY_A);
+    console.log("📥 Request Body:", body);
 
-    // console.log("api from body request ", api);
-
+    // Input validation
     if (!question || !type || !language || !api || !ai) {
-      console.log("❌ Missing question or type in request!");
-      return new Response(
-        JSON.stringify({ error: "Missing question or type" }),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+      console.warn("❌ Missing parameters in request");
+      return new Response(JSON.stringify({ error: "Missing question, type, language, api, or ai" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      });
     }
 
-    console.log("✅ Processing request...");
-
-    // Determine word limit based on answer type
+    // Select prompt
     const prompt =
       type === "short"
         ? SHORT_ANSWER_PROMPT
@@ -40,60 +42,80 @@ export async function POST(req) {
         ? LONG_ANSWER_PROMPT
         : ESSAY_PROMPT;
 
-    const finalPrompt = `${prompt.replace(
-      "{question}",
-      question
-    )}\n\nPlease provide the response in ${language}.`;
+    const finalPrompt = `${prompt.replace("{question}", question)}\n\nPlease provide the response in ${language}.`;
 
     let text = "";
 
-    // console.log("final Prompt", finalPrompt);
-
     if (ai === "gemini") {
       const genAI = new GoogleGenerativeAI(api);
-
       const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
-      console.log("📤 Sending request to Gemini API...");
+      console.log("📤 Sending request to Gemini...");
+      const result = await withTimeout(
+        model.generateContent({
+          contents: [
+            {
+              role: "user",
+              parts: [{ text: finalPrompt }],
+            },
+          ],
+        })
+      );
 
-      const result = await model.generateContent({
-        contents: [
-          {
-            role: "user",
-            parts: [{ text: finalPrompt }],
-          },
-        ],
-      });
-      // console.log("✅ Gemini API response received:", result);
       text = await result.response.text();
-    } else if (ai === "openai") {
+    }
+
+    else if (ai === "openai") {
       const openai = new OpenAI({ apiKey: openai_api_key });
-      console.log("📤 Sending request to OpenAI API...");
-      const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
-        messages: [{ role: "user", content: finalPrompt }],
-        temperature: 0.7,
-      });
-      // GPT-4-turbo 
+
+      console.log("📤 Sending request to OpenAI...");
+      const response = await withTimeout(
+        openai.chat.completions.create({
+          model: "gpt-3.5-turbo",
+          messages: [{ role: "user", content: finalPrompt }],
+          temperature: 0.7,
+        })
+      );
 
       text = response.choices[0].message.content;
-    } else {
-      return new Response(JSON.stringify({ error: "Invalid API provider" }), {
+    }
+
+    else if (ai === "deepseek") {
+      const openai = new OpenAI({
+        apiKey: deepseek_api_key,
+        baseURL: "https://api.deepseek.com",
+      });
+
+      console.log("📤 Sending request to DeepSeek...");
+      const response = await withTimeout(
+        openai.chat.completions.create({
+          model: "deepseek-chat",
+          messages: [{ role: "user", content: finalPrompt }],
+        })
+      );
+
+      text = response.choices[0].message.content;
+    }
+
+    else {
+      return new Response(JSON.stringify({ error: "❌ Invalid AI provider specified" }), {
         status: 400,
         headers: { "Content-Type": "application/json" },
       });
     }
 
-    console.log("📄 Generated Answer:", text);
+    console.log("✅ Answer generated successfully");
 
     return new Response(JSON.stringify({ answer: text }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
+
   } catch (error) {
-    console.error("❌ Gemini API Error:", error);
+    console.error("❌ Error Generating Answer:", error?.message || error);
+
     return new Response(
-      JSON.stringify({ error: "Failed to generate answer" }),
+      JSON.stringify({ error: error?.message || "Internal Server Error" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },

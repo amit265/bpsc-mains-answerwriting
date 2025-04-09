@@ -1,9 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    experimental: {
-      serverActions: false, // optional
-      serverComponentsExternalPackages: [], // optional
-      turbo: false, // ❗ This disables Turbopack
-    }
-}
+  experimental: {
+    serverActions: {},  // changed from true → {}
+    turbo: {},          // changed from true → {}
+  },
+  serverExternalPackages: ["your-package-name"], // moved outside
+};
+
 export default nextConfig;
